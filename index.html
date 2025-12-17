@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024/25 England League Visual Analytics</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-display { font-family: 'Poppins', sans-serif; }
+
+        /* --- 메인 배경 (이미지 적용) --- */
+        .bg-main-image {
+            background-image: url('dashboard_background.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        /* 메인 배경 오버레이 */
+        .bg-main-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 0;
+        }
+
+        /* 메인 콘텐츠 */
+        .main-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* --- 사이드바 스타일 --- */
+        .sidebar-bg {
+            background-image: url('menu background.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .sidebar-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+        
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 글래스모피즘 박스 */
+        .glass-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+        .glass-box:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .box-header {
+            padding: 0.75rem 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .box-content {
+            padding: 1rem;
+            flex: 1;
+            overflow-y: auto;
+            color: #eeeeee;
+            position: relative;
+        }
+
+        /* 스크롤바 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+        
+    </style>
+</head>
+<body class="bg-main-image h-screen w-screen flex overflow-hidden text-white">
+
+    <!-- 1. 왼쪽 메인 콘텐츠 -->
+    <main class="main-content flex-1 flex flex-col p-8 h-full min-w-0">
+        
+        <!-- 헤더 -->
+        <div class="mb-6 flex-none">
+            <p class="text-xl text-gray-300 font-light tracking-wide uppercase">2024/25 England League Stats</p>
+            <h1 class="text-6xl font-display font-black tracking-tight text-white">Overview</h1>
+        </div>
+
+        <!-- 2x4 그리드 -->
+        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 min-h-0 overflow-y-auto pb-4">
+
+            <!-- [1] 득점 순위 -->
+            <div class="glass-box">
+                <div class="box-header">1. 득점 순위 (Top Scorers)</div>
+                <div class="box-content">
+                    <canvas id="top-scorers-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- [2] 도움 순위 -->
+            <div class="glass-box">
+                <div class="box-header">2. 도움 순위 (Assists)</div>
+                <div class="box-content">
+                    <canvas id="top-assists-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- [3] xG -->
+            <div class="glass-box">
+                <div class="box-header">3. xG (eXpected Goals)</div>
+                <div class="box-content p-0">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-white/10 text-xs uppercase text-gray-300">
+                            <tr><th class="px-3 py-2">Player</th><th class="px-3 py-2 text-right">Conv.%</th></tr>
+                        </thead>
+                        <tbody id="efficiency-table-body" class="divide-y divide-white/10"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- [4] 팀 검색 -->
+            <div class="glass-box">
+                <div class="box-header">4. 팀 상세 검색</div>
+                <div class="box-content flex flex-col gap-3">
+                    <div class="flex gap-2">
+                        <select id="team-select" class="w-full bg-black/30 border border-white/20 px-3 py-1 text-white focus:outline-none focus:border-[#EBFD54] [&>option]:text-black rounded">
+                            <option value="Arsenal">아스날</option>
+                            <option value="Liverpool">리버풀</option>
+                            <option value="Manchester City">맨시티</option>
+                            <option value="Tottenham Hotspur">토트넘</option>
+                            <option value="Chelsea">첼시</option>
+                            <option value="Manchester United">맨유</option>
+                            <option value="Newcastle United">뉴캐슬</option>
+                            <option value="Aston Villa">아스톤 빌라</option>
+                        </select>
+                        <button onclick="searchTeam()" class="bg-[#EBFD54] text-black font-bold px-3 py-1 hover:bg-white transition rounded">Go</button>
+                    </div>
+                    <div id="team-result" class="flex-1 bg-black/20 p-2 text-sm rounded">
+                        <p class="text-gray-400 text-center mt-8">팀을 선택하세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [5] 최다 선방 -->
+            <div class="glass-box">
+                <div class="box-header">5. 최다 선방 (Saves)</div>
+                <div class="box-content p-0">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-white/10 text-xs uppercase text-gray-300">
+                            <tr><th class="px-3 py-2">GK Name</th><th class="px-3 py-2 text-right">Saves</th></tr>
+                        </thead>
+                        <tbody id="saves-table-body" class="divide-y divide-white/10"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- [6] 성적 추이 -->
+            <div class="glass-box">
+                <div class="box-header">6. 시즌 성적 추이 (Trend)</div>
+                <div class="box-content">
+                    <canvas id="team-trend-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- [7] 예측 -->
+            <div class="glass-box">
+                <div class="box-header">7. 다음 시즌 예측</div>
+                <div class="box-content flex flex-col justify-center items-center text-center" id="prediction-box">
+                    <div class="text-gray-400 text-sm">AI Prediction Model</div>
+                    <div class="text-3xl font-black text-[#EBFD54] mt-2">--</div>
+                    <div class="text-xs uppercase tracking-widest mt-1 text-white/50">Target Required</div>
+                </div>
+            </div>
+
+            <!-- [8] 선수 검색 -->
+            <div class="glass-box">
+                <div class="box-header">8. 선수 상세 검색</div>
+                <div class="box-content flex flex-col gap-3">
+                    <div class="flex gap-2">
+                        <input type="text" id="player-input" placeholder="선수명 (예: Saka)" 
+                               class="w-full bg-black/30 border border-white/20 px-3 py-1 text-white focus:outline-none focus:border-[#EBFD54] rounded">
+                        <button onclick="searchPlayer()" class="bg-[#EBFD54] text-black font-bold px-3 py-1 hover:bg-white transition rounded">🔍</button>
+                    </div>
+                    <div id="player-result" class="flex-1 bg-black/20 p-2 text-sm overflow-auto rounded">
+                        <p class="text-gray-400 text-center mt-8">선수를 검색하세요.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 2. 오른쪽 사이드바 -->
+    <aside class="w-24 md:w-64 sidebar-bg flex flex-col items-center py-8 shadow-2xl relative z-10 text-white">
+        
+        <div class="sidebar-content flex flex-col items-center w-full h-full">
+            
+            <!-- 로고 이미지 -->
+            <div class="mb-16">
+                <!-- 이미지 파일명: logo.png -->
+                <img src="logo.png" alt="EA Logo" class="w-24 h-24 object-contain drop-shadow-lg">
+            </div>
+
+            <!-- 메뉴는 요청대로 삭제되었습니다 -->
+            
+        </div>
+    </aside>
+
+    <!-- 3. 자바스크립트 (안전모드 적용됨) -->
+    <script>
+        const API_URL = 'http://127.0.0.1:5000/api';
+        Chart.defaults.color = '#ccc';
+        Chart.defaults.font.family = 'Inter';
+        Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
+
+        let scorersChart, assistsChart, trendChart = null;
+
+        window.addEventListener('load', () => {
+            loadTopScorers();
+            loadEfficiency();
+            loadTopAssisters();
+            loadTopSavers();
+        });
+
+        // [핵심] 안전한 데이터 가져오기 함수 (서버 꺼지면 임시 데이터 사용)
+        async function fetchData(endpoint) {
+            try {
+                // 1. 서버에 요청 시도
+                const response = await fetch(`${API_URL}${endpoint}`);
+                if (!response.ok) throw new Error('API Error');
+                return await response.json();
+            } catch (error) {
+                // 2. 실패하면 임시 데이터(Mock Data) 반환
+                console.warn(`서버 연결 실패 (${endpoint}). 임시 데이터를 보여줍니다.`, error);
+                return getMockData(endpoint);
+            }
+        }
+
+        // 임시 데이터 생성기 (서버가 꺼져있을 때 화면을 보여주기 위함)
+        function getMockData(endpoint) {
+            if (endpoint.includes('top-scorers')) return [
+                { 'Player Name': 'Haaland', 'Goals': 27 }, { 'Player Name': 'Palmer', 'Goals': 22 },
+                { 'Player Name': 'Isak', 'Goals': 21 }, { 'Player Name': 'Watkins', 'Goals': 19 },
+                { 'Player Name': 'Solanke', 'Goals': 19 }
+            ];
+            if (endpoint.includes('top-assisters')) return [
+                { 'Player Name': 'Watkins', 'Assists': 13 }, { 'Player Name': 'Palmer', 'Assists': 11 },
+                { 'Player Name': 'De Bruyne', 'Assists': 10 }, { 'Player Name': 'Salah', 'Assists': 10 },
+                { 'Player Name': 'Gordon', 'Assists': 10 }
+            ];
+            if (endpoint.includes('efficient-finishers')) return [
+                { 'Player Name': 'Mateta', 'Conversion_Rate': 29.5 }, { 'Player Name': 'Wood', 'Conversion_Rate': 28.1 },
+                { 'Player Name': 'Haaland', 'Conversion_Rate': 26.4 },
+                { 'Player Name': 'Palmer', 'Conversion_Rate': 25.8 }, { 'Player Name': 'Isak', 'Conversion_Rate': 24.3 }
+            ];
+            if (endpoint.includes('top-savers')) return [
+                { 'Player Name': 'Onana', 'Saves': 149 }, { 'Player Name': 'Kaminski', 'Saves': 145 },
+                { 'Player Name': 'Areola', 'Saves': 138 }, { 'Player Name': 'Pickford', 'Saves': 121 },
+                { 'Player Name': 'Leno', 'Saves': 120 }
+            ];
+            if (endpoint.includes('/predict/')) { // 예측 모의 데이터
+                return { 'predicted_goals': 18, 'predicted_assists': 12, 'predicted_rank': 2, 'predicted_points': 86 };
+            }
+            if (endpoint.includes('/stats/player/')) { // 선수 모의 데이터
+                const name = endpoint.split('/').pop();
+                return {
+                    'Club': 'Mock FC', 'Goals': 15, 'Assists': 10, 'Shots': 50, 
+                    'Goal_Contribution_Pct': 35.5, 'Player Name': decodeURIComponent(name), 'Goals_per90': 0.65
+                };
+            }
+            if (endpoint.includes('/stats/team/')) { // 팀 모의 데이터
+                return {
+                    'stats': { 'points': 89, 'goals_for': 91, 'goals_against': 29 },
+                    'trend': { 
+                        'labels': ['8월', '9월', '10월', '11월', '12월', '1월', '2월', '3월', '4월', '5월'], 
+                        'points_per_month': [9, 7, 9, 6, 12, 9, 7, 10, 12, 8] 
+                    }
+                };
+            }
+            return {};
+        }
+
+        async function loadTopScorers() {
+            const data = await fetchData('/stats/top-scorers');
+            const ctx = document.getElementById('top-scorers-chart').getContext('2d');
+            if (scorersChart) scorersChart.destroy();
+            scorersChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d['Player Name']),
+                    datasets: [{ label: '득점(Goals)', data: data.map(d => d['Goals']), backgroundColor: '#EBFD54', borderRadius: 4, barThickness: 15 }]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            });
+        }
+
+        async function loadTopAssisters() {
+            const data = await fetchData('/stats/top-assisters');
+            const ctx = document.getElementById('top-assists-chart').getContext('2d');
+            if (assistsChart) assistsChart.destroy();
+            assistsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d['Player Name']),
+                    datasets: [{ label: '도움(Assists)', data: data.map(d => d['Assists']), backgroundColor: '#76FA95', borderRadius: 4, barThickness: 15 }]
+                },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            });
+        }
+
+        async function loadEfficiency() {
+            const data = await fetchData('/stats/efficient-finishers');
+            document.getElementById('efficiency-table-body').innerHTML = data.slice(0, 5).map(p => `
+                <tr class="hover:bg-white/10 transition"><td class="px-3 py-2 text-xs truncate max-w-[80px]">${p['Player Name']}</td><td class="px-3 py-2 text-right text-xs font-bold text-[#EBFD54]">${p['Conversion_Rate'].toFixed(1)}%</td></tr>
+            `).join('');
+        }
+
+        async function loadTopSavers() {
+            const data = await fetchData('/stats/top-savers');
+            document.getElementById('saves-table-body').innerHTML = data.slice(0, 5).map(p => `
+                <tr class="hover:bg-white/10 transition"><td class="px-3 py-2 text-xs truncate max-w-[80px]">${p['Player Name']}</td><td class="px-3 py-2 text-right text-xs font-bold text-[#76FA95]">${p['Saves']}</td></tr>
+            `).join('');
+        }
+
+        async function searchPlayer() {
+            const name = document.getElementById('player-input').value;
+            const resBox = document.getElementById('player-result');
+            const predBox = document.getElementById('prediction-box');
+            if(!name) return;
+            
+            const data = await fetchData(`/stats/player/${encodeURIComponent(name)}`);
+            if (data.error) { resBox.innerHTML = `<p class="text-red-400 text-center">${data.error}</p>`; return; }
+
+            resBox.innerHTML = `
+                <div class="space-y-1 text-xs">
+                    <div class="flex justify-between"><span class="text-gray-400">Club</span><span class="font-bold">${data.Club}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Goals</span><span class="text-[#EBFD54] font-bold">${data.Goals}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Assists</span><span class="text-[#EBFD54] font-bold">${data.Assists}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Shots</span> <span>${data.Shots}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">G/90</span><span>${data.Goals_per90 ? data.Goals_per90.toFixed(2) : '-'}</span></div>
+                </div>`;
+
+            const predData = await fetchData(`/predict/player/${encodeURIComponent(name)}`);
+            predBox.innerHTML = `
+                <div class="text-xs text-gray-300 mb-1">${data['Player Name']}</div>
+                <div class="flex gap-2 justify-center text-center">
+                    <div><div class="text-[9px] text-gray-400">Exp.G</div><div class="text-lg font-bold text-[#EBFD54]">${predData.predicted_goals}</div></div>
+                    <div><div class="text-[9px] text-gray-400">Exp.A</div><div class="text-lg font-bold text-[#EBFD54]">${predData.predicted_assists}</div></div>
+                </div>`;
+        }
+
+        async function searchTeam() {
+            const team = document.getElementById('team-select').value;
+            const resBox = document.getElementById('team-result');
+            const predBox = document.getElementById('prediction-box');
+            
+            const data = await fetchData(`/stats/team/${team}`);
+            const stats = data.stats;
+            const trend = data.trend;
+
+            resBox.innerHTML = `
+                <div class="space-y-1 text-xs">
+                    <div class="flex justify-between"><span class="text-gray-400">Pts</span><span class="font-bold text-lg">${stats.points}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">GF</span><span class="text-[#EBFD54]">${stats.goals_for}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">GA</span><span class="text-red-400">${stats.goals_against}</span></div>
+                </div>`;
+
+            if (trendChart) trendChart.destroy();
+            const ctx = document.getElementById('team-trend-chart').getContext('2d');
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels: trend.labels, datasets: [{ label: 'Pts', data: trend.points_per_month, borderColor: '#EBFD54', backgroundColor: 'rgba(235, 253, 84, 0.1)', borderWidth: 2, tension: 0.4, fill: true, pointRadius: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+            });
+
+            const predData = await fetchData(`/predict/team/${team}`);
+            predBox.innerHTML = `
+                <div class="text-xs text-gray-300 mb-1">${team}</div>
+                <div class="text-center"><div class="text-3xl font-black text-[#EBFD54]">${predData.predicted_rank}<span class="text-sm text-white">위</span></div><div class="text-[9px] text-gray-400">Exp. Pts: ${predData.predicted_points}</div></div>`;
+        }
+    </script>
+</body>
+</html>

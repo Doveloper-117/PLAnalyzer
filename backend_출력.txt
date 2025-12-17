@@ -1,0 +1,204 @@
+Last login: Wed Nov  5 19:09:01 on ttys000
+/Users/dosiigner_macbookpro/.zshrc:export:2: not valid in this context: JAVA_HOME-/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro ~ % cd-/Documents/PLAnalyzer_Project
+zsh: no such file or directory: cd-/Documents/PLAnalyzer_Project
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro ~ % cd ~/Documents/PLAnalyzer_Project/database
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % pip3 install flask flask-cors pandas scikit-learn
+Defaulting to user installation because normal site-packages is not writeable
+Collecting flask
+  Downloading flask-3.1.2-py3-none-any.whl (103 kB)
+     |████████████████████████████████| 103 kB 3.2 MB/s 
+Collecting flask-cors
+  Downloading flask_cors-6.0.1-py3-none-any.whl (13 kB)
+Collecting pandas
+  Downloading pandas-2.3.3-cp39-cp39-macosx_11_0_arm64.whl (10.8 MB)
+     |████████████████████████████████| 10.8 MB 11.2 MB/s 
+Collecting scikit-learn
+  Downloading scikit_learn-1.6.1-cp39-cp39-macosx_12_0_arm64.whl (11.1 MB)
+     |████████████████████████████████| 11.1 MB 31.8 MB/s 
+Collecting blinker>=1.9.0
+  Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Collecting jinja2>=3.1.2
+  Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+     |████████████████████████████████| 134 kB 34.0 MB/s 
+Collecting itsdangerous>=2.2.0
+  Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Collecting markupsafe>=2.1.1
+  Downloading markupsafe-3.0.3-cp39-cp39-macosx_11_0_arm64.whl (12 kB)
+Collecting importlib-metadata>=3.6.0
+  Downloading importlib_metadata-8.7.0-py3-none-any.whl (27 kB)
+Collecting werkzeug>=3.1.0
+  Downloading werkzeug-3.1.3-py3-none-any.whl (224 kB)
+     |████████████████████████████████| 224 kB 39.4 MB/s 
+Collecting click>=8.1.3
+  Downloading click-8.1.8-py3-none-any.whl (98 kB)
+     |████████████████████████████████| 98 kB 9.1 MB/s 
+Collecting tzdata>=2022.7
+  Downloading tzdata-2025.2-py2.py3-none-any.whl (347 kB)
+     |████████████████████████████████| 347 kB 19.4 MB/s 
+Collecting numpy>=1.22.4
+  Downloading numpy-2.0.2-cp39-cp39-macosx_14_0_arm64.whl (5.3 MB)
+     |████████████████████████████████| 5.3 MB 19.5 MB/s 
+Collecting pytz>=2020.1
+  Downloading pytz-2025.2-py2.py3-none-any.whl (509 kB)
+     |████████████████████████████████| 509 kB 19.8 MB/s 
+Collecting python-dateutil>=2.8.2
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+     |████████████████████████████████| 229 kB 50.3 MB/s 
+Collecting scipy>=1.6.0
+  Downloading scipy-1.13.1-cp39-cp39-macosx_12_0_arm64.whl (30.3 MB)
+     |████████████████████████████████| 30.3 MB 22.8 MB/s 
+Collecting joblib>=1.2.0
+  Downloading joblib-1.5.2-py3-none-any.whl (308 kB)
+     |████████████████████████████████| 308 kB 39.3 MB/s 
+Collecting threadpoolctl>=3.1.0
+  Downloading threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+Collecting zipp>=3.20
+  Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+Requirement already satisfied: six>=1.5 in /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages (from python-dateutil>=2.8.2->pandas) (1.15.0)
+Installing collected packages: zipp, markupsafe, werkzeug, numpy, jinja2, itsdangerous, importlib-metadata, click, blinker, tzdata, threadpoolctl, scipy, pytz, python-dateutil, joblib, flask, scikit-learn, pandas, flask-cors
+  WARNING: The scripts f2py and numpy-config are installed in '/Users/dosiigner_macbookpro/Library/Python/3.9/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script flask is installed in '/Users/dosiigner_macbookpro/Library/Python/3.9/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed blinker-1.9.0 click-8.1.8 flask-3.1.2 flask-cors-6.0.1 importlib-metadata-8.7.0 itsdangerous-2.2.0 jinja2-3.1.6 joblib-1.5.2 markupsafe-3.0.3 numpy-2.0.2 pandas-2.3.3 python-dateutil-2.9.0.post0 pytz-2025.2 scikit-learn-1.6.1 scipy-1.13.1 threadpoolctl-3.6.0 tzdata-2025.2 werkzeug-3.1.3 zipp-3.23.0
+WARNING: You are using pip version 21.2.4; however, version 25.3 is available.
+You should consider upgrading via the '/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip' command.
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+
+/Library/Developer/CommandLineTools/usr/bin/python3: can't open file '/Users/dosiigner_macbookpro/Documents/PLAnalyzer_Project/database/data_preprocessor.py': [Errno 2] No such file or directory
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+데이터 로딩 시작...
+경고: './England Premier League.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+경고: './England Championship.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+경고: './epl_player_stats_24_25.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+오류: 로드할 수 있는 데이터 파일이 하나도 없습니다. 파일 경로를 확인해주세요.
+
+=== 데이터 전처리 작업 실패: 데이터를 로드할 수 없습니다. ===
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 model_trainer.py
+
+=== 모델 훈련기 시작 ===
+
+--- 팀 모델 훈련 시작 (processed_data/team_data.csv) ---
+오류: 'processed_data/team_data.csv' 파일을 찾을 수 없습니다.
+data_preprocessor.py를 먼저 실행하여 전처리된 데이터를 생성해야 합니다.
+
+--- 선수 모델 훈련 시작 (processed_data/player_data.csv) ---
+오류: 'processed_data/player_data.csv' 파일을 찾을 수 없습니다.
+
+=== 모든 모델 훈련 작업 완료 ===
+'trained_models' 폴더에 .pkl 파일이 생성되었는지 확인하세요.
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % 
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+데이터 로딩 시작...
+경고: './England Premier League.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+경고: './England Championship.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+경고: './epl_player_stats_24_25.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+오류: 로드할 수 있는 데이터 파일이 하나도 없습니다. 파일 경로를 확인해주세요.
+
+=== 데이터 전처리 작업 실패: 데이터를 로드할 수 없습니다. ===
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+데이터 로딩 시작...
+성공: './24 25 PL Full Data.csv' 로드 완료 (행: 12153)
+성공: './24 25 England Championship Full Data.csv' 로드 완료 (행: 11351)
+경고: './PL player stats 24 25.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+성공: './Europe_Big_5_Ligue_players_data_full-2024 25.csv' 로드 완료 (행: 2854)
+데이터 전처리 시작...
+ - EPL 및 챔피언십 데이터 통합 중...
+ - (TODO) 팀 데이터 Feature 엔지니어링 (승점, 골득실 등)...
+ - (TODO) 팀 데이터 결측치 및 타입 변환 처리...
+ - 팀 데이터 통합 및 전처리 완료.
+모든 데이터 전처리 완료.
+전처리된 데이터 저장 시작...
+성공: './processed_data/team_data.csv' 저장 완료
+
+=== 데이터 전처리 작업 완료 ===
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+데이터 로딩 시작...
+성공: './24 25 PL Full Data.csv' 로드 완료 (행: 12153)
+성공: './24 25 England Championship Full Data.csv' 로드 완료 (행: 11351)
+경고: './PL player stats 24 25.csv' 파일을 찾을 수 없습니다. 이 파일은 건너뜁니다.
+성공: './Europe_Big_5_Ligue_players_data_full-2024 25.csv' 로드 완료 (행: 2854)
+데이터 전처리 시작...
+ - EPL 및 챔피언십 데이터 통합 중...
+ - (TODO) 팀 데이터 Feature 엔지니어링 (승점, 골득실 등)...
+ - (TODO) 팀 데이터 결측치 및 타입 변환 처리...
+ - 팀 데이터 통합 및 전처리 완료.
+모든 데이터 전처리 완료.
+전처리된 데이터 저장 시작...
+성공: './processed_data/team_data.csv' 저장 완료
+
+=== 데이터 전처리 작업 완료 ===
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 data_preprocessor.py
+
+데이터 로딩 시작...
+성공: './24 25 PL Full Data.csv' 로드 완료 (행: 12153)
+성공: './24 25 England Championship Full Data.csv' 로드 완료 (행: 11351)
+성공: './PL players stats 24 25.csv' 로드 완료 (행: 4270)
+성공: './Europe_Big_5_Ligue_players_data_full-2024 25.csv' 로드 완료 (행: 2854)
+데이터 전처리 시작...
+ - EPL 및 챔피언십 데이터 통합 중...
+ - (TODO) 팀 데이터 Feature 엔지니어링 (승점, 골득실 등)...
+ - (TODO) 팀 데이터 결측치 및 타입 변환 처리...
+ - 팀 데이터 통합 및 전처리 완료.
+ - 선수 데이터 전처리 중...
+ - (TODO) 선수 데이터 결측치 처리...
+ - (TODO) 선수 데이터 Feature 엔지니어링 (90분당 스탯)...
+ - 선수 데이터 전처리 완료.
+모든 데이터 전처리 완료.
+전처리된 데이터 저장 시작...
+성공: './processed_data/team_data.csv' 저장 완료
+성공: './processed_data/player_data.csv' 저장 완료
+
+=== 데이터 전처리 작업 완료 ===
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 model_trainer.py
+
+=== 모델 훈련기 시작 ===
+
+--- 팀 모델 훈련 시작 (processed_data/team_data.csv) ---
+ (임시) 가상의 훈련 데이터 생성 중...
+훈련 데이터: (80, 3), 테스트 데이터: (20, 3)
+모델 훈련 완료.
+모델 성능 (RMSE): 1.09
+성공: 팀 모델을 'trained_models/team_prediction_model.pkl'에 저장했습니다.
+
+--- 선수 모델 훈련 시작 (processed_data/player_data.csv) ---
+ (임시) 가상의 훈련 데이터 생성 중...
+훈련 데이터: (400, 3), 테스트 데이터: (100, 3)
+모델 훈련 완료 (Goals).
+성공: 선수 모델(Goals)을 'trained_models/player_prediction_model.pkl'에 저장했습니다.
+
+=== 모든 모델 훈련 작업 완료 ===
+'trained_models' 폴더에 .pkl 파일이 생성되었는지 확인하세요.
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 app.py
+
+Traceback (most recent call last):
+  File "/Users/dosiigner_macbookpro/Documents/PLAnalyzer_Project/database/app.py", line 5, in <module>
+    from season_analyzer import SeasonAnalyzer
+ModuleNotFoundError: No module named 'season_analyzer'
+dosiigner_macbookpro@DOSiiGNERs-MacBook-Pro database % python3 app.py
+
+Flask 앱 시작 중... 분석기 및 예측 모델을 로드합니다.
+SeasonAnalyzer 초기화 중...
+데이터 로드 완료. 분석기 준비 완료.
+PredictionModel 초기화 중...
+성공: 'trained_models/team_prediction_model.pkl' 모델 로드 완료
+성공: 'trained_models/player_prediction_model.pkl' 모델 로드 완료
+모델 로드 완료. 예측기 준비 완료.
+분석기 및 예측 모델 로드 완료. API 서버 준비 완료.
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+127.0.0.1 - - [05/Nov/2025 19:48:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [05/Nov/2025 19:48:41] "GET /favicon.ico HTTP/1.1" 404 -
+[API 요청] 팀 스탯: tottenhamhotspur
+'tottenhamhotspur' (2024-2025 시즌) 스탯 계산 중...
+'tottenhamhotspur' (2024-2025 시즌) 성과 추이 분석 중...
+127.0.0.1 - - [05/Nov/2025 19:51:47] "GET /api/stats/team/tottenhamhotspur HTTP/1.1" 200 -
+[API 요청] 팀 스탯: declanrice
+'declanrice' (2024-2025 시즌) 스탯 계산 중...
+'declanrice' (2024-2025 시즌) 성과 추이 분석 중...
+127.0.0.1 - - [05/Nov/2025 20:22:39] "GET /api/stats/team/declanrice HTTP/1.1" 200 -
+
